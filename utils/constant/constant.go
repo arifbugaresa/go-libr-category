@@ -18,12 +18,7 @@ func (t TableName) TableName() string {
 }
 
 const (
-	User                   TableName = "users"
-	Role                   TableName = "roles"
-	Permission             TableName = "permissions"
-	RolePermission         TableName = "role_permissions"
-	EmailTemplateTableName TableName = "email_templates"
-	Service                TableName = "services"
+	Category TableName = "categories"
 )
 
 type DateTimeFormat string

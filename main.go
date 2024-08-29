@@ -42,7 +42,7 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	category.Inititator(grpcServer)
+	category.Inititator(grpcServer, dbConnection)
 
 	log.Printf("gRPC server listening on %v", lis.Addr())
 	if err = grpcServer.Serve(lis); err != nil {

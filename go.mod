@@ -4,6 +4,7 @@ go 1.22.4
 
 require (
 	github.com/doug-martin/goqu v5.0.0+incompatible
+	github.com/doug-martin/goqu/v9 v9.19.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/lib/pq v1.10.9
 	github.com/rubenv/sql-migrate v1.7.0
