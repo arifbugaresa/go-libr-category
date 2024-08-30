@@ -11,7 +11,7 @@ type service struct {
 }
 
 func (s *service) InsertCategory(ctx context.Context, req *pb.InsertCategoryRequest) (*pb.InsertCategoryResponse, error) {
-	err := s.repo.InsertCategory(ctx, &pb.Category{
+	err := s.repo.InsertCategory(ctx, DTOCategory{
 		Name:        req.Name,
 		Description: req.Description,
 	})
@@ -23,8 +23,8 @@ func (s *service) InsertCategory(ctx context.Context, req *pb.InsertCategoryRequ
 }
 
 func (s *service) UpdateCategory(ctx context.Context, req *pb.UpdateCategoryRequest) (*pb.UpdateCategoryResponse, error) {
-	err := s.repo.UpdateCategory(ctx, &pb.Category{
-		Id:          req.Id,
+	err := s.repo.UpdateCategory(ctx, DTOCategory{
+		ID:          req.Id,
 		Name:        req.Name,
 		Description: req.Description,
 	})
@@ -36,10 +36,35 @@ func (s *service) UpdateCategory(ctx context.Context, req *pb.UpdateCategoryRequ
 }
 
 func (s *service) ListCategory(ctx context.Context, req *pb.ListCategoryRequest) (*pb.ListCategoryResponse, error) {
-	res, err := s.repo.ListCategory(ctx)
+	categories, err := s.repo.ListCategory(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.ListCategoryResponse{Categories: res}, nil
+	// convert into response pb
+	categoryResponse := make([]*pb.Category, len(categories))
+	for _, category := range categories {
+		categoryResponse = append(categoryResponse, &pb.Category{
+			Id:          category.ID,
+			Name:        category.Name,
+			Description: category.Description,
+		})
+	}
+
+	return &pb.ListCategoryResponse{Categories: categoryResponse}, nil
+}
+
+func (s *service) GetCategoryById(ctx context.Context, req *pb.GetCategoryByIdRequest) (*pb.GetCategoryByIdResponse, error) {
+	category, err := s.repo.GetCategoryById(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetCategoryByIdResponse{
+		Category: &pb.Category{
+			Id:          category.ID,
+			Name:        category.Name,
+			Description: category.Description,
+		},
+	}, nil
 }
